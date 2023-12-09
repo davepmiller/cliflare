@@ -1,18 +1,42 @@
 use clap::{ArgMatches, Command};
-use reqwest::header::{AUTHORIZATION, CONTENT_TYPE};
 use serde::{Deserialize, Serialize};
 use serde_json::Value as JSON;
-use std::env;
+use std::fmt::{Display, Formatter};
+use crate::client;
 
 pub const CMD: &str = "tokens";
 const ENDPOINT: &str = "https://api.cloudflare.com/client/v4/user/tokens/verify";
 
 #[derive(Serialize, Deserialize, Debug)]
+pub struct Result {
+    id: String,
+    status: String,
+    not_before: String,
+    expires_on: String
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Message {
+    code: i32,
+    message: String
+}
+
+#[derive(Serialize, Deserialize, Debug)]
 pub struct ApiResponse {
     errors: Vec<JSON>,
-    messages: Vec<JSON>,
-    result: JSON,
+    messages: Vec<Message>,
+    result: Result,
     success: bool,
+}
+
+impl Display for ApiResponse {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        Ok(
+            for message in &self.messages {
+                return write!(f, "{}", message.message)
+            }
+        )
+    }
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -35,25 +59,14 @@ pub(crate) fn get_command() -> Command {
 }
 
 pub(crate) async fn call(sub_matches: &ArgMatches) {
-    let token = match env::var("CLOUDFLARE_TOKEN") {
-        Ok(t) => t,
-        Err(_) => panic!("CLOUDFLARE_TOKEN is not set"),
-    };
     let tokens_command = sub_matches.subcommand().unwrap();
     match tokens_command {
         ("verify", _) => {
-            let client = reqwest::Client::new();
-            let response = client
-                .get(ENDPOINT)
-                .header(AUTHORIZATION, format!("Bearer {}", token))
-                .header(CONTENT_TYPE, "application/json")
-                .send()
-                .await
-                .unwrap();
+            let response = client::get(ENDPOINT).await;
             match response.status() {
                 reqwest::StatusCode::OK => {
                     match response.json::<ApiResponse>().await {
-                        Ok(parsed) => println!("Success! {:?}", parsed),
+                        Ok(api_response) => println!("{}", api_response),
                         Err(e) => println!("Something went wrong, response error {:?}", e),
                     };
                 }

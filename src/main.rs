@@ -1,5 +1,6 @@
 mod cli;
 mod user_tokens;
+mod client;
 
 #[tokio::main]
 async fn main() {
