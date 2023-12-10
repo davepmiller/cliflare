@@ -1,8 +1,8 @@
 use crate::{client, response};
 use clap::{ArgMatches, Command};
 
-pub const COMMAND: &str = "zones";
-const PATH: &str = COMMAND;
+pub const COMMAND: &str = "zone";
+const PATH: &str = "zones";
 
 pub fn command_definition() -> Command {
     Command::new("zone")
