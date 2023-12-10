@@ -1,5 +1,7 @@
 use crate::{client, response};
-use clap::{ArgMatches, Command};
+use clap::{Arg, ArgMatches, Command};
+use reqwest::StatusCode;
+use crate::response::{handle_error, Response};
 
 pub const COMMAND: &str = "zone";
 const PATH: &str = "zones";
@@ -11,19 +13,42 @@ pub fn command_definition() -> Command {
         .subcommand(
             Command::new("list")
                 .about("List zones")
-                .about("📝: https://developers.cloudflare.com/api/operations/zones-get"),
+                .about("📝: https://developers.cloudflare.com/api/operations/zones-get")
+                .arg(
+                    Arg::new("domains")
+                        .long("domains")
+                        .short('d')
+                        .num_args(0)
+                        .help("list domains")
+                )
         )
 }
 
 pub async fn call(sub_matches: &ArgMatches) {
     let command = sub_matches.subcommand().unwrap();
     match command {
-        ("list", _) => {
+        ("list", arg_matches) => {
             let response = client::get(PATH).await;
-            response::handle(response).await;
+            match response.status() {
+                StatusCode::OK => match arg_matches.contains_id("domains") {
+                    true => domains_handler(response).await,
+                    false => response::handle_default_ok(response).await
+                },
+                _ => handle_error(response)
+            }
         }
         (name, _) => {
             unreachable!("Unsupported subcommand {}", name)
         }
     }
+}
+
+async fn domains_handler(response: reqwest::Response) {
+    match response.json::<Response>().await {
+        Ok(api_response) => {
+            api_response.result.as_array().unwrap().iter()
+                .for_each(|zone| println!("{}", zone["name"].as_str().unwrap()))
+        },
+        Err(e) => println!("ERROR: {:?}", e),
+    };
 }

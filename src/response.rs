@@ -1,3 +1,4 @@
+use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -18,28 +19,33 @@ struct ResultInfo {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub(crate) struct Response {
-    result: Value,
+    pub(crate) result: Value,
     result_info: ResultInfo,
     success: bool,
     errors: Vec<Value>,
     messages: Vec<Message>,
 }
 
-pub async fn handle(response: reqwest::Response) {
+pub async fn handle_default_ok(response: reqwest::Response) {
+    if response.status() != StatusCode::OK {
+        panic!("handle_default_ok requires StatusCode::OK, was passed: {}", response.status())
+    }
+
+    match response.json::<Response>().await {
+        Ok(api_response) => println!("{:?}", api_response),
+        Err(e) => println!("ERROR: {:?}", e),
+    };
+}
+
+pub(crate) fn handle_error(response: reqwest::Response) {
     match response.status() {
-        reqwest::StatusCode::OK => {
-            match response.json::<Response>().await {
-                Ok(api_response) => println!("{:?}", api_response),
-                Err(e) => println!("ERROR: {:?}", e),
-            };
-        }
-        reqwest::StatusCode::BAD_REQUEST => {
+        StatusCode::BAD_REQUEST => {
             println!("400 UNAUTHORIZED");
         }
-        reqwest::StatusCode::UNAUTHORIZED => {
+        StatusCode::UNAUTHORIZED => {
             println!("401 UNAUTHORIZED");
         }
-        reqwest::StatusCode::FORBIDDEN => {
+        StatusCode::FORBIDDEN => {
             println!("403: FORBIDDEN");
         }
         other => {

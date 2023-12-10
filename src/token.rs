@@ -20,7 +20,11 @@ pub async fn call(sub_matches: &ArgMatches) {
     match tokens_command {
         ("verify", _) => {
             let response = client::get(PATH).await;
-            response::handle(response).await;
+            if response.status() == reqwest::StatusCode::OK {
+                response::handle_default_ok(response).await;
+            } else {
+                response::handle_error(response);
+            }
         }
         (name, _) => {
             unreachable!("Unsupported subcommand {}", name)
