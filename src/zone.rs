@@ -27,19 +27,27 @@ pub fn command_definition() -> Command {
 pub async fn call(sub_matches: &ArgMatches) {
     let command = sub_matches.subcommand().unwrap();
     match command {
-        ("list", arg_matches) => {
+        ("list", args) => {
             let response = client::get(PATH).await;
-            match response.status() {
-                StatusCode::OK => match arg_matches.contains_id("domains") {
-                    true => domains_handler(response).await,
-                    false => response::handle_default_ok(response).await
-                },
-                _ => handle_error(response)
-            }
+            handle_response(response, args).await
         }
         (name, _) => {
             unreachable!("Unsupported subcommand {}", name)
         }
+    }
+}
+
+async fn handle_response(response: reqwest::Response, args: &ArgMatches) {
+    match response.status() {
+        StatusCode::OK => handle_ok(response, args).await,
+        _ => handle_error(response)
+    }
+}
+
+async fn handle_ok(response: reqwest::Response, args: &ArgMatches) {
+    match args.contains_id("domains") {
+        true => domains_handler(response).await,
+        false => response::handle_default_ok(response).await
     }
 }
 

@@ -20,14 +20,18 @@ pub async fn call(sub_matches: &ArgMatches) {
     match tokens_command {
         ("verify", _) => {
             let response = client::get(PATH).await;
-            if response.status() == reqwest::StatusCode::OK {
-                response::handle_default_ok(response).await;
-            } else {
-                response::handle_error(response);
-            }
+            handle_response(response).await;
         }
         (name, _) => {
             unreachable!("Unsupported subcommand {}", name)
         }
+    }
+}
+
+async fn handle_response(response: reqwest::Response) {
+    if response.status() == reqwest::StatusCode::OK {
+        response::handle_default_ok(response).await;
+    } else {
+        response::handle_error(response);
     }
 }
