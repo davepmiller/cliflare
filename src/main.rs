@@ -1,13 +1,18 @@
 mod cli;
-mod user_tokens;
 mod client;
+mod response;
+mod token;
+mod zone;
 
 #[tokio::main]
 async fn main() {
     let matches = cli::command().get_matches();
     match matches.subcommand() {
-        Some((user_tokens::CMD, sub_matches)) => {
-            user_tokens::call(sub_matches).await;
+        Some((token::COMMAND, sub_matches)) => {
+            token::call(sub_matches).await;
+        }
+        Some((zone::COMMAND, sub_matches)) => {
+            zone::call(sub_matches).await;
         }
         _ => unreachable!(),
     }

@@ -3,6 +3,13 @@ CLI tool to interact with Cloudflare APIs. An excuse to write some Rust.
 
 Current functionality:
 * [Cloudflare API - Verify Token](https://developers.cloudflare.com/api/operations/user-api-tokens-verify-token)
+```bash
+CLOUDFLARE_TOKEN="$CLOUDFLARE_TOKEN"; cargo run -- token verify
+```
+* [Zone List](https://developers.cloudflare.com/api/operations/zones-get)
+```bash
+CLOUDFLARE_TOKEN="$CLOUDFLARE_TOKEN"; cargo run -- zone list
+```
 
 Coming soon:
 * [Zone Details](https://developers.cloudflare.com/api/operations/zones-0-get)
@@ -11,10 +18,7 @@ Coming soon:
 * [Create DNS Record](https://developers.cloudflare.com/api/operations/dns-records-for-a-zone-create-dns-record)
 
 Coming after:
+* Proper crate and homebrew setup
 * Create WAF rules
 * Create redirect rules
 * Create some other rules
-
-```bash
-CLOUDFLARE_TOKEN="$CLOUDFLARE_TOKEN"; cargo run -- tokens verify
-```
