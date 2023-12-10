@@ -2,7 +2,7 @@
 CLI 🛠️ to interact with Cloudflare APIs. An excuse to write some Rust.
 
 Current functionality:
-* [Cloudflare API - Verify Token](https://developers.cloudflare.com/api/operations/user-api-tokens-verify-token)
+* [Token Verify](https://developers.cloudflare.com/api/operations/user-api-tokens-verify-token)
 ```bash
 CLOUDFLARE_TOKEN="$CLOUDFLARE_TOKEN"; cargo run -- token verify
 ```
