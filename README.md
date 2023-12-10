@@ -8,7 +8,10 @@ CLOUDFLARE_TOKEN="$CLOUDFLARE_TOKEN"; cargo run -- token verify
 ```
 * [Zone List](https://developers.cloudflare.com/api/operations/zones-get)
 ```bash
+# print out all zone info
 CLOUDFLARE_TOKEN="$CLOUDFLARE_TOKEN"; cargo run -- zone list
+# print domain name for each zone
+cargo run -- zone list --domains
 ```
 
 Coming soon:
