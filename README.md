@@ -16,13 +16,14 @@
   cargo build --release
   ```
 * [Generate a Cloudflare API token 📝](https://developers.cloudflare.com/cloudflare-one/api-terraform/scoped-api-tokens/)
+* [Grab Account And Zone IDs 📝](https://developers.cloudflare.com/fundamentals/setup/find-account-and-zone-ids/)
 * Environment
   ```bash
   # add your token value to a startup script
-  echo abcd1234**API-TOKEN**4321dcba >> ~/.zshrc
+  echo CLOUDFLARE_TOKEN=abcd1234**API_TOKEN**4321dcba >> ~/.zshrc
+  echo CLOUDFLARE_ACCOUNT_ID=abcd1234**ACCOUNT_ID**4321dcba >> ~/.zshrc
   ```
 #### Execute:
-
 * [Token Verify 📝](https://developers.cloudflare.com/api/operations/user-api-tokens-verify-token)
     ```bash
     cargo run -- token verify
@@ -34,10 +35,13 @@
     # print domain name for each zone
     cargo run -- zone list --domains
     ```
+* [Create Zone](https://developers.cloudflare.com/api/operations/zones-post)
+  ```bash
+  cargo run -- zone create newzone.com
+  ```
 
 Coming soon:
 * [Zone Details](https://developers.cloudflare.com/api/operations/zones-0-get)
-* [Create Zone](https://developers.cloudflare.com/api/operations/zones-post)
 * [List DNS Records For A Zone](https://developers.cloudflare.com/api/operations/dns-records-for-a-zone-list-dns-records)
 * [Create DNS Record For A Zone](https://developers.cloudflare.com/api/operations/dns-records-for-a-zone-create-dns-record)
 

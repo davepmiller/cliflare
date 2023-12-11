@@ -1,3 +1,6 @@
+use clap::Parser;
+use crate::cli::{Cli, Commands, TokenCommands, ZoneCommands};
+
 mod cli;
 mod client;
 mod response;
@@ -6,14 +9,26 @@ mod zone;
 
 #[tokio::main]
 async fn main() {
-    let matches = cli::command().get_matches();
-    match matches.subcommand() {
-        Some((token::COMMAND, sub_matches)) => {
-            token::call(sub_matches).await;
+    let args = Cli::parse();
+    match args.command {
+        Commands::Token(token) => {
+            let token_cmd = token.command.unwrap_or(TokenCommands::Verify);
+            match token_cmd {
+                TokenCommands::Verify => token::verify().await
+            }
         }
-        Some((zone::COMMAND, sub_matches)) => {
-            zone::call(sub_matches).await;
+        Commands::Zone(zone) => {
+            match zone.command.unwrap() {
+                ZoneCommands::List(args) => {
+                    match args.domains {
+                        true => zone::list_domains().await,
+                        false => zone::list().await
+                    }
+                }
+                ZoneCommands::Create{domain} => {
+                    zone::create(domain).await
+                }
+            }
         }
-        _ => unreachable!(),
     }
 }

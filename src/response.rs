@@ -20,13 +20,13 @@ struct ResultInfo {
 #[derive(Serialize, Deserialize, Debug)]
 pub(crate) struct Response {
     pub(crate) result: Value,
-    result_info: ResultInfo,
+    result_info: Option<ResultInfo>,
     success: bool,
     errors: Vec<Value>,
     messages: Vec<Message>,
 }
 
-pub async fn handle_default_ok(response: reqwest::Response) {
+pub async fn print(response: reqwest::Response) {
     if response.status() != StatusCode::OK {
         panic!("handle_default_ok requires StatusCode::OK, was passed: {}", response.status())
     }

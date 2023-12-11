@@ -1,7 +1,59 @@
 use reqwest::header::{AUTHORIZATION, CONTENT_TYPE};
 use std::env;
+use serde::{Deserialize, Serialize};
 
 const ENDPOINT: &str = "https://api.cloudflare.com/client/v4";
+
+pub async fn get(path: &str) -> reqwest::Response {
+    let header = get_header();
+    reqwest::Client::new()
+        .get(format!("{}/{}", ENDPOINT, path))
+        .header(AUTHORIZATION, header.auth)
+        .header(CONTENT_TYPE, header.content_type)
+        .send()
+        .await
+        .unwrap()
+}
+
+pub(crate) async fn post(path: &str, name: String) -> reqwest::Response {
+    let header = get_header();
+    let body = CreateBody {
+        account: Account {
+            id: get_account_id().to_string()
+        },
+        name
+    };
+    reqwest::Client::new()
+        .post(format!("{}/{}", ENDPOINT, path))
+        .header(AUTHORIZATION, header.auth)
+        .json(&body)
+        .send()
+        .await
+        .unwrap()
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct Account {
+    id: String
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct CreateBody {
+    account: Account,
+    name: String
+}
+
+struct Header {
+    auth: String,
+    content_type: String
+}
+
+fn get_header() -> Header {
+    Header {
+        auth: format!("Bearer {}", get_token()),
+        content_type: "application/json".to_string()
+    }
+}
 
 fn get_token() -> String {
     match env::var("CLOUDFLARE_TOKEN") {
@@ -10,16 +62,9 @@ fn get_token() -> String {
     }
 }
 
-pub async fn get(path: &str) -> reqwest::Response {
-    let client = reqwest::Client::new();
-    let url = format!("{}/{}", ENDPOINT, path);
-    let auth = format!("Bearer {}", get_token());
-    let content_type = "application/json";
-    client
-        .get(url)
-        .header(AUTHORIZATION, auth)
-        .header(CONTENT_TYPE, content_type)
-        .send()
-        .await
-        .unwrap()
+fn get_account_id() -> String {
+    match env::var("CLOUDFLARE_ACCOUNT_ID") {
+        Ok(id) => id.to_string(),
+        Err(_) => panic!("CLOUDFLARE_ACCOUNT_ID is not set")
+    }
 }
