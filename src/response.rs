@@ -28,7 +28,10 @@ pub(crate) struct Response {
 
 pub async fn print(response: reqwest::Response) {
     if response.status() != StatusCode::OK {
-        panic!("handle_default_ok requires StatusCode::OK, was passed: {}", response.status())
+        panic!(
+            "handle_default_ok requires StatusCode::OK, was passed: {}",
+            response.status()
+        )
     }
 
     match response.json::<Response>().await {

@@ -1,6 +1,6 @@
 use reqwest::header::{AUTHORIZATION, CONTENT_TYPE};
-use std::env;
 use serde::{Deserialize, Serialize};
+use std::env;
 
 const ENDPOINT: &str = "https://api.cloudflare.com/client/v4";
 
@@ -19,9 +19,9 @@ pub(crate) async fn post(path: &str, name: String) -> reqwest::Response {
     let header = get_header();
     let body = CreateBody {
         account: Account {
-            id: get_account_id().to_string()
+            id: get_account_id().to_string(),
         },
-        name
+        name,
     };
     reqwest::Client::new()
         .post(format!("{}/{}", ENDPOINT, path))
@@ -34,24 +34,24 @@ pub(crate) async fn post(path: &str, name: String) -> reqwest::Response {
 
 #[derive(Serialize, Deserialize, Debug)]
 struct Account {
-    id: String
+    id: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 struct CreateBody {
     account: Account,
-    name: String
+    name: String,
 }
 
 struct Header {
     auth: String,
-    content_type: String
+    content_type: String,
 }
 
 fn get_header() -> Header {
     Header {
         auth: format!("Bearer {}", get_token()),
-        content_type: "application/json".to_string()
+        content_type: "application/json".to_string(),
     }
 }
 
@@ -65,6 +65,6 @@ fn get_token() -> String {
 fn get_account_id() -> String {
     match env::var("CLOUDFLARE_ACCOUNT_ID") {
         Ok(id) => id.to_string(),
-        Err(_) => panic!("CLOUDFLARE_ACCOUNT_ID is not set")
+        Err(_) => panic!("CLOUDFLARE_ACCOUNT_ID is not set"),
     }
 }

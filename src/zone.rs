@@ -1,5 +1,5 @@
-use crate::{client, response};
 use crate::response::Response;
+use crate::{client, response};
 
 const PATH: &str = "zones";
 
@@ -15,10 +15,12 @@ pub async fn list_domains() {
 
 async fn print_domains(response: reqwest::Response) {
     match response.json::<Response>().await {
-        Ok(api_response) => {
-            api_response.result.as_array().unwrap().iter()
-                .for_each(|zone| println!("{}", zone["name"].as_str().unwrap()))
-        },
+        Ok(api_response) => api_response
+            .result
+            .as_array()
+            .unwrap()
+            .iter()
+            .for_each(|zone| println!("{}", zone["name"].as_str().unwrap())),
         Err(e) => println!("ERROR: {:?}", e),
     };
 }
@@ -26,4 +28,14 @@ async fn print_domains(response: reqwest::Response) {
 pub(crate) async fn create(name: String) {
     let response = client::post(PATH, name.to_string()).await;
     response::print(response).await;
+}
+
+pub(crate) async fn dns_list(id: String) {
+    let path = format!("{}/{}/dns_records", PATH, id);
+    let response = client::get(path.as_str()).await;
+    response::print(response).await
+}
+
+pub(crate) fn get_id_from_name(name: String) -> String {
+    format!("{}", name)
 }

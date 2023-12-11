@@ -39,10 +39,13 @@
   ```bash
   cargo run -- zone create newzone.com
   ```
-
-Coming soon:
-* [Zone Details](https://developers.cloudflare.com/api/operations/zones-0-get)
 * [List DNS Records For A Zone](https://developers.cloudflare.com/api/operations/dns-records-for-a-zone-list-dns-records)
+  ```bash
+  cargo run -- zone dns list --id <ZONE_ID>
+  ```
+
+* Coming soon:
+* [Zone Details](https://developers.cloudflare.com/api/operations/zones-0-get)
 * [Create DNS Record For A Zone](https://developers.cloudflare.com/api/operations/dns-records-for-a-zone-create-dns-record)
 
 Coming after:
