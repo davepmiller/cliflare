@@ -35,7 +35,7 @@
     # print domain name for each zone
     cargo run -- zone list --domains
     ```
-* [Create Zone](https://developers.cloudflare.com/api/operations/zones-post)
+* [Create Zone 📝](https://developers.cloudflare.com/api/operations/zones-post)
   ```bash
   cargo run -- zone create newzone.com
   ```
