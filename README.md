@@ -44,11 +44,11 @@
   cargo run -- zone dns list --id <ZONE_ID>
   ```
 
-* Coming soon:
+#### Coming Soon:
 * [Zone Details](https://developers.cloudflare.com/api/operations/zones-0-get)
 * [Create DNS Record For A Zone](https://developers.cloudflare.com/api/operations/dns-records-for-a-zone-create-dns-record)
 
-Coming after:
+#### Coming Soonish:
 * Proper crate and homebrew setup
 * Create WAF rules
 * Create redirect rules
