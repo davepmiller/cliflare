@@ -13,7 +13,7 @@
     ```
 * Build
   ```bash
-  cargo build --release
+  cd cliflare && cargo build --release
   ```
 * [Generate a Cloudflare API token 📝](https://developers.cloudflare.com/cloudflare-one/api-terraform/scoped-api-tokens/)
 * [Grab Account And Zone IDs 📝](https://developers.cloudflare.com/fundamentals/setup/find-account-and-zone-ids/)
@@ -26,22 +26,22 @@
 #### Execute:
 * [Token Verify 📝](https://developers.cloudflare.com/api/operations/user-api-tokens-verify-token)
     ```bash
-    cargo run -- token verify
+    ./target/release/cliflare token verify
     ```
 * [Zone List 📝](https://developers.cloudflare.com/api/operations/zones-get)
     ```bash
     # print out all zone info
-    cargo run -- zone list
+    ./target/release/cliflare zone list
     # print domain name for each zone
-    cargo run -- zone list --domains
+    ./target/release/cliflare zone list --domains
     ```
 * [Create Zone 📝](https://developers.cloudflare.com/api/operations/zones-post)
   ```bash
-  cargo run -- zone create newzone.com
+  ./target/release/cliflare zone create newzone.com
   ```
 * [List DNS Records For A Zone](https://developers.cloudflare.com/api/operations/dns-records-for-a-zone-list-dns-records)
   ```bash
-  cargo run -- zone dns list --id <ZONE_ID>
+  ./target/release/cliflare zone dns list --id <ZONE_ID>
   ```
 
 #### Coming Soon:
