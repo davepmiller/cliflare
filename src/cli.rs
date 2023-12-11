@@ -11,7 +11,9 @@ pub(crate) struct Cli {
 
 #[derive(Debug, Subcommand)]
 pub(crate) enum Commands {
+    /// List, Create, and manage DNS for Zones
     Zone(ZoneArgs),
+    /// Verify your API Token
     Token(TokenArgs),
 }
 
