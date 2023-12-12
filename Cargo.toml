@@ -1,9 +1,17 @@
 # manifest docs ---> https://doc.rust-lang.org/cargo/reference/manifest.html
 [package]
 name = "cliflare"
+description = "A command line tool used to interact with Cloudflare APIs"
 version = "0.1.0"
 edition = "2021"
 authors = ["@davepmiller"]
+readme = "README.md"
+homepage = "https://github.com/davepmiller/cliflare"
+repository = "https://github.com/rust-lang/cargo/"
+license = "MIT"
+keywords = ["cli", "cloudflare", "dns", "web"]
+categories = ["command-line-interface", "command-line-utilities"]
+exclude = [".github"]
 
 [dependencies]
 clap = { version = "4.4.11", features = ["derive"] }
