@@ -24,7 +24,7 @@ async fn main() {
                 ZoneDnsCommands::List { name, id } => {
                     let id = match name.is_none() {
                         true => id.unwrap(),
-                        false => zone::get_id_from_name(name.unwrap()),
+                        false => name.unwrap(),
                     };
                     zone::dns_list(id).await
                 }
