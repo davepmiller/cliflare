@@ -1,4 +1,5 @@
 # ☁️🚀 cliflare 🚀☁️
+[![Coverage Status](https://coveralls.io/repos/github/davepmiller/cliflare/badge.svg?branch=main)](https://coveralls.io/github/davepmiller/cliflare?branch=main)
 * CLI 🛠️ to interact with Cloudflare APIs.
 * An excuse to write some Rust 🥳
 
