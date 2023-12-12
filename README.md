@@ -1,5 +1,10 @@
 # ☁️🚀 cliflare 🚀☁️
+![build](https://github.com/davepmiller/cliflare/ci.yml/badge.svg?branch=main)
 [![Coverage Status](https://coveralls.io/repos/github/davepmiller/cliflare/badge.svg?branch=main)](https://coveralls.io/github/davepmiller/cliflare?branch=main)
+![crates.io](https://img.shields.io/crates/v/cliflare.svg)
+![downloads](https://img.shields.io/crates/d/cliflare)
+[![license](https://img.shields.io/badge/license-MIT-green.svg)](https://opensource.org/licenses/MIT)
+
 * 🛠 CLI️ to interact with Cloudflare APIs.
 * 🥳 An excuse to write some Rust
 * 👷 Under heavy development!!! Happy for help!

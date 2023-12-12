@@ -61,3 +61,11 @@ fn get_env(key: &str) -> String {
         Err(_) => panic!("{} is not set", key),
     }
 }
+
+#[test]
+fn test_get_env() {
+    let key = "TEST_KEY";
+    let value = "TEST_VALUE";
+    env::set_var(key, value);
+    assert_eq!(get_env(key), value);
+}
