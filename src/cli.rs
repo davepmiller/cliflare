@@ -49,7 +49,7 @@ pub enum ZoneCommands {
     },
     /// interact with DNS records for a zone
     #[command(arg_required_else_help = true)]
-    DNS(ZoneDNSArgs),
+    Dns(ZoneDnsArgs),
 }
 
 #[derive(Debug, Args)]
@@ -61,13 +61,13 @@ pub(crate) struct ZoneListArgs {
 
 #[derive(Debug, Args)]
 #[command(flatten_help = true)]
-pub(crate) struct ZoneDNSArgs {
+pub(crate) struct ZoneDnsArgs {
     #[command(subcommand)]
-    pub(crate) command: ZoneDNSCommands,
+    pub(crate) command: ZoneDnsCommands,
 }
 
 #[derive(Debug, Subcommand)]
-pub(crate) enum ZoneDNSCommands {
+pub(crate) enum ZoneDnsCommands {
     /// List DNS records for a zone
     List {
         /// zone name

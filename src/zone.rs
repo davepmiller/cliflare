@@ -37,5 +37,5 @@ pub(crate) async fn dns_list(id: String) {
 }
 
 pub(crate) fn get_id_from_name(name: String) -> String {
-    format!("{}", name)
+    name.to_string()
 }

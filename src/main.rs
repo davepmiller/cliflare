@@ -1,4 +1,4 @@
-use crate::cli::{Cli, Commands, TokenCommands, ZoneCommands, ZoneDNSCommands};
+use crate::cli::{Cli, Commands, TokenCommands, ZoneCommands, ZoneDnsCommands};
 use clap::Parser;
 
 mod cli;
@@ -20,8 +20,8 @@ async fn main() {
                 false => zone::list().await,
             },
             ZoneCommands::Create { domain } => zone::create(domain).await,
-            ZoneCommands::DNS(dns) => match dns.command {
-                ZoneDNSCommands::List { name, id } => {
+            ZoneCommands::Dns(dns) => match dns.command {
+                ZoneDnsCommands::List { name, id } => {
                     let id = match name.is_none() {
                         true => id.unwrap(),
                         false => zone::get_id_from_name(name.unwrap()),
