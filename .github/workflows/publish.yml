@@ -1,4 +1,4 @@
-name: tag and publish crate [manual]
+name: publish
 
 on:
   workflow_dispatch:
