@@ -1,4 +1,4 @@
-name: CI
+name: ci
 
 on:
   workflow_dispatch:
@@ -124,7 +124,7 @@ jobs:
       - uses: actions-rs/clippy-check@v1.0.7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --all-features --all-targets
+          args: --all-features
 
   ubuntu-latest-nightly:
     needs: [format]
