@@ -19,7 +19,7 @@ pub(crate) async fn post(path: &str, name: String) -> reqwest::Response {
     let header = get_header();
     let body = CreateBody {
         account: Account {
-            id: get_account_id().to_string(),
+            id: get_env("CLOUDFLARE_ACCOUNT_ID"),
         },
         name,
     };
@@ -50,21 +50,14 @@ struct Header {
 
 fn get_header() -> Header {
     Header {
-        auth: format!("Bearer {}", get_token()),
+        auth: format!("Bearer {}", get_env("CLOUDFLARE_TOKEN")),
         content_type: "application/json".to_string(),
     }
 }
 
-fn get_token() -> String {
-    match env::var("CLOUDFLARE_TOKEN") {
+fn get_env(key: &str) -> String {
+    match env::var(key) {
         Ok(t) => t,
-        Err(_) => panic!("CLOUDFLARE_TOKEN is not set"),
-    }
-}
-
-fn get_account_id() -> String {
-    match env::var("CLOUDFLARE_ACCOUNT_ID") {
-        Ok(id) => id.to_string(),
-        Err(_) => panic!("CLOUDFLARE_ACCOUNT_ID is not set"),
+        Err(_) => panic!("{} is not set", key),
     }
 }
