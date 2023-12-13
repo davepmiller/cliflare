@@ -36,7 +36,7 @@
     ```bash
     # print out all zone info
     cliflare zone list
-    # print domain name for each zone
+    # print only zone "name" field -- i.e. domains
     cliflare zone list --domains
     ```
 * [Create Zone 📝](https://developers.cloudflare.com/api/operations/zones-post)
