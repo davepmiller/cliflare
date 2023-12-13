@@ -1,4 +1,6 @@
 use crate::cli::{Cli, Commands, TokenCommands, ZoneCommands, ZoneDnsCommands};
+use crate::token::Token;
+use crate::zone::Zone;
 use clap::Parser;
 
 mod cli;
@@ -12,21 +14,18 @@ async fn main() {
     let args = Cli::parse();
     match args.command {
         Commands::Token(token) => match token.command {
-            TokenCommands::Verify => token::verify().await,
+            TokenCommands::Verify => Token::verify().await,
         },
         Commands::Zone(zone) => match zone.command.unwrap() {
             ZoneCommands::List(args) => match args.domains {
-                true => zone::list_domains().await,
-                false => zone::list().await,
+                true => Zone::list_domains().await,
+                false => Zone::list().await,
             },
-            ZoneCommands::Create { domain } => zone::create(domain).await,
+            ZoneCommands::Create { domain } => Zone::create(domain).await,
             ZoneCommands::Dns(dns) => match dns.command {
                 ZoneDnsCommands::List { name, id } => {
-                    let id = match name.is_none() {
-                        true => id.unwrap(),
-                        false => name.unwrap(),
-                    };
-                    zone::dns_list(id).await
+                    let id = Zone::get_id(name, id).await;
+                    Zone::dns_list(id).await
                 }
             },
         },

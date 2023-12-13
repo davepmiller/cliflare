@@ -19,19 +19,16 @@ impl CloudflareClient {
             .await
             .unwrap();
         let decoded_response = response.json::<Response>().await;
-        match decoded_response {
-            Ok(dr) => dr,
-            Err(e) => {
-                println!("{:?}", e);
-                Response {
-                    result: Value::String("{}".to_string()),
-                    result_info: None,
-                    success: false,
-                    errors: vec![],
-                    messages: vec![],
-                }
+        decoded_response.unwrap_or_else(|e| {
+            println!("{:?}", e);
+            Response {
+                result: Value::String("{}".to_string()),
+                result_info: None,
+                success: false,
+                errors: vec![],
+                messages: vec![],
             }
-        }
+        })
     }
 
     pub(crate) async fn post(path: &str, name: String) -> reqwest::Response {
