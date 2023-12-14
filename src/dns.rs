@@ -1,6 +1,6 @@
 use crate::client::CloudflareClient;
 
-const PATH: &'static str = "zones";
+const PATH: &str = "zones";
 
 pub(crate) struct Dns;
 
@@ -9,7 +9,7 @@ impl Dns {
         let path = format!(
             "{}/{}/dns_records?per_page=100",
             PATH,
-            id.as_str().replace("\"", "")
+            id.as_str().replace('\"', "")
         );
         let response = CloudflareClient::get(path.as_str());
         println!("{:?}", response);

@@ -1,7 +1,7 @@
 use crate::client::CloudflareClient;
 use serde_json::json;
 
-const PATH: &'static str = "zones";
+const PATH: &str = "zones";
 
 pub(crate) struct Zone;
 
