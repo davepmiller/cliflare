@@ -1,17 +1,18 @@
 use crate::client::CloudflareClient;
+use serde_json::json;
 
 const PATH: &'static str = "zones";
 
 pub(crate) struct Zone;
 
 impl Zone {
-    pub(crate) async fn list() {
-        let response = CloudflareClient::get(format!("{}/?per_page=100", PATH).as_str()).await;
+    pub(crate) fn list() {
+        let response = CloudflareClient::get(format!("{}/?per_page=100", PATH).as_str());
         println!("{:?}", response);
     }
 
-    pub(crate) async fn list_domains() {
-        let response = CloudflareClient::get(format!("{}/?per_page=100", PATH).as_str()).await;
+    pub(crate) fn list_domains() {
+        let response = CloudflareClient::get(format!("{}/?per_page=100", PATH).as_str());
         response
             .result
             .as_array()
@@ -20,8 +21,10 @@ impl Zone {
             .for_each(|zone| println!("{}", zone["name"].as_str().unwrap()))
     }
 
-    pub(crate) async fn create(name: String) {
-        let response = CloudflareClient::post(PATH, name.to_string()).await;
+    pub(crate) fn create(name: String) {
+        let body = json!({"name": name.as_str()});
+        // let body = Value::from_str(format!("name: {}", name).as_str()).unwrap();
+        let response = CloudflareClient::post(PATH, body);
         println!("{:?}", response);
     }
 }

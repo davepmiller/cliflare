@@ -11,25 +11,26 @@ mod response;
 mod token;
 mod zone;
 
-#[tokio::main]
-async fn main() {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Cli::parse();
     match args.command {
         Commands::Token(token) => match token.command {
-            TokenCommands::Verify => Token::verify().await,
+            TokenCommands::Verify => Token::verify(),
         },
         Commands::Zone(zone) => match zone.command.unwrap() {
             ZoneCommands::List(args) => match args.domains {
-                true => Zone::list_domains().await,
-                false => Zone::list().await,
+                true => Zone::list_domains(),
+                false => Zone::list(),
             },
-            ZoneCommands::Create { domain } => Zone::create(domain).await,
+            ZoneCommands::Create { domain } => Zone::create(domain),
         },
         Commands::Dns(dns) => match dns.command {
             DnsCommands::List { zone_name, zone_id } => {
-                let id = Dns::get_id(zone_name, zone_id).await;
-                Dns::list(id).await
+                let id = Dns::get_id(zone_name, zone_id);
+                Dns::list(id)
             }
         },
     }
+
+    Ok(())
 }
