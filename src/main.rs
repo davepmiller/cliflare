@@ -1,10 +1,12 @@
-use crate::cli::{Cli, Commands, TokenCommands, ZoneCommands, ZoneDnsCommands};
+use crate::cli::{Cli, Commands, DnsCommands, TokenCommands, ZoneCommands};
+use crate::dns::Dns;
 use crate::token::Token;
 use crate::zone::Zone;
 use clap::Parser;
 
 mod cli;
 mod client;
+mod dns;
 mod response;
 mod token;
 mod zone;
@@ -22,12 +24,12 @@ async fn main() {
                 false => Zone::list().await,
             },
             ZoneCommands::Create { domain } => Zone::create(domain).await,
-            ZoneCommands::Dns(dns) => match dns.command {
-                ZoneDnsCommands::List { name, id } => {
-                    let id = Zone::get_id(name, id).await;
-                    Zone::dns_list(id).await
-                }
-            },
+        },
+        Commands::Dns(dns) => match dns.command {
+            DnsCommands::List { zone_name, zone_id } => {
+                let id = Dns::get_id(zone_name, zone_id).await;
+                Dns::list(id).await
+            }
         },
     }
 }

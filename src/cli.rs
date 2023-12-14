@@ -11,10 +11,12 @@ pub(crate) struct Cli {
 
 #[derive(Debug, Subcommand)]
 pub(crate) enum Commands {
-    /// List, Create, and manage DNS for Zones
+    /// List, Create, Zones
     Zone(ZoneArgs),
     /// Verify your API Token
     Token(TokenArgs),
+    /// Manage DNS records
+    Dns(DnsArgs),
 }
 
 #[derive(Debug, Args)]
@@ -47,9 +49,6 @@ pub enum ZoneCommands {
         #[arg(short, long, required = true)]
         domain: String,
     },
-    /// interact with DNS records for a zone
-    #[command(arg_required_else_help = true)]
-    Dns(ZoneDnsArgs),
 }
 
 #[derive(Debug, Args)]
@@ -61,20 +60,21 @@ pub(crate) struct ZoneListArgs {
 
 #[derive(Debug, Args)]
 #[command(flatten_help = true)]
-pub(crate) struct ZoneDnsArgs {
+pub(crate) struct DnsArgs {
     #[command(subcommand)]
-    pub(crate) command: ZoneDnsCommands,
+    pub(crate) command: DnsCommands,
 }
 
 #[derive(Debug, Subcommand)]
-pub(crate) enum ZoneDnsCommands {
+pub(crate) enum DnsCommands {
     /// List DNS records for a zone
+    #[command(arg_required_else_help = true)]
     List {
         /// zone name
-        #[arg(long, required_unless_present = "id")]
-        name: Option<String>,
+        #[arg(long, short = 'n', required_unless_present = "zone_id")]
+        zone_name: Option<String>,
         /// zone ID
-        #[arg(long, required_unless_present = "name")]
-        id: Option<String>,
+        #[arg(long, short = 'i', required_unless_present = "zone_name")]
+        zone_id: Option<String>,
     },
 }

@@ -45,15 +45,20 @@
   ```
 * [List DNS Records For A Zone](https://developers.cloudflare.com/api/operations/dns-records-for-a-zone-list-dns-records)
   ```bash
-  cliflare zone dns list --id <ZONE_ID>
+  cliflare dns list --zone_id <ZONE_ID>
+  cliflare dns list -i <ZONE_ID>
+  cliflare dns list --zone_name <DOMAIN>
+  cliflare dns list -n <DOMAIN>
   ```
 
 #### Coming Soon:
 * [Zone Details](https://developers.cloudflare.com/api/operations/zones-0-get)
 * [Create DNS Record For A Zone](https://developers.cloudflare.com/api/operations/dns-records-for-a-zone-create-dns-record)
+* Parameterize [Pagination Options](https://developers.cloudflare.com/fundamentals/api/how-to/make-api-calls/#pagination)
 
 #### Coming Soonish:
 * Homebrew setup
 * Create WAF rules
 * Create redirect rules
 * Create some other rules
+* Add parameters to `zone create` for customization
