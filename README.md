@@ -43,7 +43,7 @@
   ```bash
   cliflare zone create newzone.com
   ```
-* [List DNS Records For A Zone](https://developers.cloudflare.com/api/operations/dns-records-for-a-zone-list-dns-records)
+* [List DNS Records For A Zone 📝](https://developers.cloudflare.com/api/operations/dns-records-for-a-zone-list-dns-records)
   ```bash
   cliflare dns list --zone_id <ZONE_ID>
   cliflare dns list -i <ZONE_ID>
