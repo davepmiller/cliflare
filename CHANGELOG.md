@@ -11,7 +11,7 @@ Possible log types:
 - `[fixed]` for any bug fixes.
 - `[security]` to invite users to upgrade in case of vulnerabilities.
 
-### V0.1.6 (2023-12-14)
+### V0.2.0 (2023-12-14)
 
 - [added] added `zone dns export`
 - [changed] Remove tokio async, use reqwest::blocking
