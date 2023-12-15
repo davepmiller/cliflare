@@ -11,7 +11,16 @@ Possible log types:
 - `[fixed]` for any bug fixes.
 - `[security]` to invite users to upgrade in case of vulnerabilities.
 
-### V0.1.5 (2023-12-23)
+### V0.1.6 (2023-12-14)
+
+- [added] added `zone dns export`
+- [changed] Remove tokio async, use reqwest::blocking
+  This was the only way I could figure out mocking for tests.
+- [added] Added `CODE_OF_CONDUCT.md`
+- [added] Added `CONTRIBUTING.md`
+
+
+### V0.1.5 (2023-12-13)
 
 - [changed] Changed parameter names for `zones dns list` to be more explicit. `id` to `zone_id`, `name` to `zone_name`.
 - [added] Added short parameters for `zones dns list`. `z` and `i`

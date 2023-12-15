@@ -50,6 +50,13 @@
   cliflare dns list --zone_name <DOMAIN>
   cliflare dns list -n <DOMAIN>
   ```
+* [Export DNS Records For A Zone 📝](https://developers.cloudflare.com/api/operations/dns-records-for-a-zone-export-dns-records)
+  ```bash
+  cliflare dns export --zone_id <ZONE_ID>
+  cliflare dns export -i <ZONE_ID>
+  cliflare dns export --zone_name <DOMAIN>
+  cliflare dns export -n <DOMAIN>
+  ```
 
 #### Coming Soon:
 * [Zone Details](https://developers.cloudflare.com/api/operations/zones-0-get)
