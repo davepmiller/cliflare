@@ -1,5 +1,9 @@
 name: publish
 
+env:
+  CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
 on:
   workflow_dispatch:
     inputs:
