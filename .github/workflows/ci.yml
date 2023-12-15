@@ -8,8 +8,8 @@ on:
       - main
 
 env:
-  CLOUDFLARE_TOKEN: ${{ env.CLOUDFLARE_TOKEN }}
-  CLOUDFLARE_ACCOUNT_ID: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
+  CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
 jobs:
   format:
