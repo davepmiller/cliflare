@@ -29,6 +29,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 let id = Dns::get_id(zone_name, zone_id);
                 Dns::list(id)
             }
+            DnsCommands::Export { zone_name, zone_id } => {
+                let id = Dns::get_id(zone_name, zone_id);
+                Dns::export(id);
+            }
         },
     }
 

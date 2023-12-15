@@ -77,4 +77,14 @@ pub(crate) enum DnsCommands {
         #[arg(long, short = 'i', required_unless_present = "zone_name")]
         zone_id: Option<String>,
     },
+    /// List DNS records for a zone
+    #[command(arg_required_else_help = true)]
+    Export {
+        /// zone name
+        #[arg(long, short = 'n', required_unless_present = "zone_id")]
+        zone_name: Option<String>,
+        /// zone ID
+        #[arg(long, short = 'i', required_unless_present = "zone_name")]
+        zone_id: Option<String>,
+    },
 }

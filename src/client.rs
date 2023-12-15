@@ -1,7 +1,6 @@
 use crate::response::Response;
 use reqwest::header::{HeaderMap, HeaderValue};
 use reqwest::header::{AUTHORIZATION, CONTENT_TYPE};
-use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use std::env;
 
@@ -20,7 +19,10 @@ impl CloudflareClient {
             .headers(headers)
             .send()
             .unwrap();
-        parse_response(response)
+        match path.contains("export") {
+            true => parse_text(response),
+            false => parse_response(response),
+        }
     }
 
     pub(crate) fn post(&self, path: &str, body: Value) -> Response {
@@ -38,15 +40,18 @@ impl CloudflareClient {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-pub(crate) struct Account {
-    pub(crate) id: String,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub(crate) struct RequestBody {
-    pub(crate) account: Account,
-    pub(crate) name: String,
+fn parse_text(response: reqwest::blocking::Response) -> Response {
+    Response {
+        result: Value::String("{}".to_string()),
+        result_info: None,
+        success: false,
+        errors: vec![],
+        messages: vec![],
+        text: Some(response.text().unwrap_or_else(|e| {
+            println!("{:?}", e);
+            "".to_string()
+        })),
+    }
 }
 
 fn get_headers() -> HeaderMap {
@@ -61,7 +66,7 @@ fn get_headers() -> HeaderMap {
     headers
 }
 
-pub(crate) fn get_env(key: &str) -> String {
+fn get_env(key: &str) -> String {
     match env::var(key) {
         Ok(t) => t,
         Err(_) => panic!("{} is not set", key),
@@ -77,6 +82,7 @@ fn parse_response(response: reqwest::blocking::Response) -> Response {
             success: false,
             errors: vec![],
             messages: vec![],
+            text: Some("".to_string()),
         }
     })
 }
@@ -87,6 +93,17 @@ mod test {
     use serde_json::json;
     use std::env;
 
+    fn response_body() -> String {
+        json!({
+        "success": true,
+        "result": "",
+        "errors": [],
+        "messages": [],
+        "result_info": ""
+        })
+        .to_string()
+    }
+
     #[test]
     fn test_get() {
         let mut mock_server = mockito::Server::new();
@@ -94,16 +111,7 @@ mod test {
             .mock("GET", "/zones")
             .with_status(201)
             .with_header("content-type", "application/json")
-            .with_body(
-                json!({
-                    "success": true,
-                    "result": "",
-                    "errors": [],
-                    "messages": [],
-                    "result_info": ""
-                })
-                .to_string(),
-            )
+            .with_body(response_body())
             .create();
         let client = CloudflareClient {
             endpoint: mock_server.url(),
@@ -127,7 +135,8 @@ mod test {
                     "result": "",
                     "errors": [],
                     "messages": [],
-                    "result_info": ""
+                    "result_info": "",
+                    "text": ""
                 })
                 .to_string(),
             )

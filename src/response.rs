@@ -8,4 +8,5 @@ pub(crate) struct Response {
     pub(crate) success: bool,
     pub(crate) errors: Vec<Value>,
     pub(crate) messages: Vec<Value>,
+    pub(crate) text: Option<String>,
 }

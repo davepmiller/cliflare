@@ -5,9 +5,9 @@ const PATH: &str = "zones";
 pub(crate) struct Dns;
 
 impl Dns {
-    pub(crate) fn list(id: String) {
+    pub(crate) fn export(id: String) {
         let path = format!(
-            "{}/{}/dns_records?per_page=100",
+            "{}/{}/dns_records/export?per_page=100",
             PATH,
             id.as_str().replace('\"', "")
         );
@@ -41,5 +41,18 @@ impl Dns {
         };
 
         matched_id
+    }
+
+    pub(crate) fn list(id: String) {
+        let path = format!(
+            "{}/{}/dns_records?per_page=100",
+            PATH,
+            id.as_str().replace('\"', "")
+        );
+        let response = CloudflareClient {
+            endpoint: ENDPOINT.to_string(),
+        }
+        .get(path.as_str());
+        println!("{:?}", response);
     }
 }
