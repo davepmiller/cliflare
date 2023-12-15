@@ -15,7 +15,7 @@ impl Dns {
             endpoint: ENDPOINT.to_string(),
         }
         .get(path.as_str());
-        println!("{:?}", response);
+        println!("{}", response.text.unwrap().as_str());
     }
 
     pub(crate) fn get_id(zone_name: Option<String>, zone_id: Option<String>) -> String {
