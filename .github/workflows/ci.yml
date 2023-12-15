@@ -1,5 +1,4 @@
 name: ci
-run-name: Build and test by @${{ github.actor }}
 
 on:
   workflow_dispatch:
@@ -71,10 +70,8 @@ jobs:
         with:
           components: llvm-tools-preview
       - uses: taiki-e/install-action@cargo-llvm-cov
-      - name: generate lcov.info
-        run: cargo llvm-cov --all-features --lcov --output-path lcov.info
-      - name: ship lcov.info to coveralls
-        uses: coverallsapp/github-action@v2.2.3
+      - run: cargo llvm-cov --all-features --lcov --output-path lcov.info
+      - uses: coverallsapp/github-action@v2.2.3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: lcov.info

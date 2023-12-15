@@ -27,26 +27,13 @@ jobs:
     steps:
       - name: checkout repo
         uses: actions/checkout@v2
-      - name: install stable toolchain
-        uses: actions-rs/toolchain@v1
+      - uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: stable
-          override: true
-      - name: install rustfmt
-        run: rustup component add rustfmt
-      - name: rustfmt check
-        run: cargo fmt --all -- --check
-      - name: install clippy
-        run: rustup component add clippy
-      - name: cargo clippy
-        run: cargo clippy --all-features --all-targets
-      - name: cargo test
-        run: cargo test
-      - name: install cargo bump
-        run: cargo install cargo-bump
-      - name: bump version
-        run: cargo bump -g ${{ inputs.tag-increment }}
-      - name: push
-        run: git push && git push --tags
-      - name: cargo publish
-        run: cargo publish --token ${{ secrets.CARGO_TOKEN }}
+          components: rustfmt, clippy
+      - run: cargo fmt --all -- --check
+      - run: cargo clippy --all-features --all-targets
+      - run: cargo test
+      - run: cargo install cargo-bump
+      - run: cargo bump -g ${{ inputs.tag-increment }}
+      - run: git push && git push --tags
+      - run: cargo publish --token ${{ secrets.CARGO_TOKEN }}
