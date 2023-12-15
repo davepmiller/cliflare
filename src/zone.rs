@@ -1,4 +1,4 @@
-use crate::client::CloudflareClient;
+use crate::client::{CloudflareClient, ENDPOINT};
 use serde_json::json;
 
 const PATH: &str = "zones";
@@ -7,12 +7,18 @@ pub(crate) struct Zone;
 
 impl Zone {
     pub(crate) fn list() {
-        let response = CloudflareClient::get(format!("{}/?per_page=100", PATH).as_str());
+        let response = CloudflareClient {
+            endpoint: ENDPOINT.to_string(),
+        }
+        .get(format!("{}/?per_page=100", PATH).as_str());
         println!("{:?}", response);
     }
 
     pub(crate) fn list_domains() {
-        let response = CloudflareClient::get(format!("{}/?per_page=100", PATH).as_str());
+        let response = CloudflareClient {
+            endpoint: ENDPOINT.to_string(),
+        }
+        .get(format!("{}/?per_page=100", PATH).as_str());
         response
             .result
             .as_array()
@@ -23,8 +29,10 @@ impl Zone {
 
     pub(crate) fn create(name: String) {
         let body = json!({"name": name.as_str()});
-        // let body = Value::from_str(format!("name: {}", name).as_str()).unwrap();
-        let response = CloudflareClient::post(PATH, body);
+        let response = CloudflareClient {
+            endpoint: ENDPOINT.to_string(),
+        }
+        .post(PATH, body);
         println!("{:?}", response);
     }
 }

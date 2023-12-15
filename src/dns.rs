@@ -1,4 +1,4 @@
-use crate::client::CloudflareClient;
+use crate::client::{CloudflareClient, ENDPOINT};
 
 const PATH: &str = "zones";
 
@@ -11,7 +11,10 @@ impl Dns {
             PATH,
             id.as_str().replace('\"', "")
         );
-        let response = CloudflareClient::get(path.as_str());
+        let response = CloudflareClient {
+            endpoint: ENDPOINT.to_string(),
+        }
+        .get(path.as_str());
         println!("{:?}", response);
     }
 
@@ -20,7 +23,10 @@ impl Dns {
             true => zone_id.unwrap(),
             false => {
                 let name_arg = zone_name.unwrap().clone();
-                let response = CloudflareClient::get(format!("{}/?per_page=100", PATH).as_str());
+                let response = CloudflareClient {
+                    endpoint: ENDPOINT.to_string(),
+                }
+                .get(format!("{}/?per_page=100", PATH).as_str());
                 match response
                     .result
                     .as_array()
