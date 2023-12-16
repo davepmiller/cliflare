@@ -6,7 +6,6 @@ on:
   push:
     branches:
       - main
-      - dev
 
 env:
   CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
