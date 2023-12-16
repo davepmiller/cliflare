@@ -23,6 +23,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 false => Zone::list(),
             },
             ZoneCommands::Create { domain } => Zone::create(domain),
+            ZoneCommands::Delete { zone_id, zone_name } => {
+                let id = Dns::get_id(zone_name, zone_id);
+                Zone::delete(id);
+            }
         },
         Commands::Dns(dns) => match dns.command {
             DnsCommands::List { zone_name, zone_id } => {
@@ -32,6 +36,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             DnsCommands::Export { zone_name, zone_id } => {
                 let id = Dns::get_id(zone_name, zone_id);
                 Dns::export(id);
+            }
+            DnsCommands::Import {
+                zone_name,
+                zone_id,
+                file,
+                proxy,
+            } => {
+                let id = Dns::get_id(zone_name, zone_id);
+                Dns::import(id, file, proxy);
             }
         },
     }

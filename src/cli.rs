@@ -49,6 +49,16 @@ pub enum ZoneCommands {
         #[arg(short, long, required = true)]
         domain: String,
     },
+    /// delete a zone
+    #[command(arg_required_else_help = true)]
+    Delete {
+        /// zone name
+        #[arg(long, short = 'n', required_unless_present = "zone_id")]
+        zone_name: Option<String>,
+        /// zone ID
+        #[arg(long, short = 'i', required_unless_present = "zone_name")]
+        zone_id: Option<String>,
+    },
 }
 
 #[derive(Debug, Args)]
@@ -77,7 +87,7 @@ pub(crate) enum DnsCommands {
         #[arg(long, short = 'i', required_unless_present = "zone_name")]
         zone_id: Option<String>,
     },
-    /// List DNS records for a zone
+    /// Export DNS records for a zone
     #[command(arg_required_else_help = true)]
     Export {
         /// zone name
@@ -86,5 +96,21 @@ pub(crate) enum DnsCommands {
         /// zone ID
         #[arg(long, short = 'i', required_unless_present = "zone_name")]
         zone_id: Option<String>,
+    },
+    /// Import DNS records to a zone
+    #[command(arg_required_else_help = true)]
+    Import {
+        /// zone name
+        #[arg(long, short = 'n', required_unless_present = "zone_id")]
+        zone_name: Option<String>,
+        /// zone ID
+        #[arg(long, short = 'i', required_unless_present = "zone_name")]
+        zone_id: Option<String>,
+        /// BIND file to import
+        #[arg(long, short, required = true)]
+        file: String,
+        /// Whether or not to proxy proxiable records
+        #[arg(long, short)]
+        proxy: bool,
     },
 }

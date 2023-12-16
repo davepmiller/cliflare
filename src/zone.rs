@@ -1,5 +1,4 @@
-use crate::client::{CloudflareClient, ENDPOINT};
-use serde_json::json;
+use crate::client::{CloudflareClient, RequestBody, ENDPOINT};
 
 const PATH: &str = "zones";
 
@@ -28,11 +27,20 @@ impl Zone {
     }
 
     pub(crate) fn create(name: String) {
-        let body = json!({"name": name.as_str()});
+        let mut body = RequestBody::default();
+        body.name = Option::from(name);
         let response = CloudflareClient {
             endpoint: ENDPOINT.to_string(),
         }
-        .post(PATH, body);
+        .post_json(PATH, body);
+        println!("{:?}", response);
+    }
+
+    pub(crate) fn delete(id: String) {
+        let response = CloudflareClient {
+            endpoint: ENDPOINT.to_string(),
+        }
+        .delete(format!("{}/{}", PATH, id.as_str().replace('\"', "")));
         println!("{:?}", response);
     }
 }
