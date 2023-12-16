@@ -1,24 +1,29 @@
 # Changelog
 
-This project follows semantic versioning.
+### V0.3.2 (2023-12-15)
 
-Possible log types:
+- [added] `zone delete --name <DOMAIN>`
+- [added] `dns import --file <PATH> --name <DOMAIN>`
 
-- `[added]` for new features.
-- `[changed]` for changes in existing functionality.
-- `[deprecated]` for once-stable features removed in upcoming releases.
-- `[removed]` for deprecated features removed in this release.
-- `[fixed]` for any bug fixes.
-- `[security]` to invite users to upgrade in case of vulnerabilities.
+### V0.3.1 (2023-12-15)
+
+- [fixed] `zone dns export` output
+  The output needed to be usable by `zone dns import`
+
+### V0.3.0 (2023-12-15)
+
+- [fixed] fixed Cargo.toml -> package -> repository
+- [changed] migrated CI rust toolchain -> `dtolnay/rust-toolchain`
+  This action is current, no more deprecation warnings!
+- [changed] updated CI git checkout action `actions/checkout@v4`
 
 ### V0.2.0 (2023-12-14)
 
-- [added] added `zone dns export`
+- [added] `zone dns export`
 - [changed] Remove tokio async, use reqwest::blocking
   This was the only way I could figure out mocking for tests.
 - [added] Added `CODE_OF_CONDUCT.md`
 - [added] Added `CONTRIBUTING.md`
-
 
 ### V0.1.5 (2023-12-13)
 
