@@ -215,7 +215,7 @@ mod test {
         };
         let mut body = RequestBody::default();
         body.name = Option::from("test.com".to_string());
-        let res = client.delete("zones/1234".to_string());
+        let res = client.delete("zones/1234");
 
         mock.assert();
         assert!(res.success);
