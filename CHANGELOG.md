@@ -4,6 +4,7 @@
 
 - [added] `zone delete --name <DOMAIN>`
 - [added] `dns import --file <PATH> --name <DOMAIN>`
+- [added] link for feature requests
 
 ### V0.3.1 (2023-12-15)
 
