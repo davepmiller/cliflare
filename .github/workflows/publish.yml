@@ -6,10 +6,6 @@ env:
 
 on:
   workflow_dispatch:
-    workflows: [ci]
-    branches: [main]
-    types:
-      - completed
     inputs:
       tag-increment:
         description: increment version tag
@@ -20,7 +16,11 @@ on:
           - patch
           - minor
           - major
-
+  workflow_run:
+    workflows: [ ci ]
+    branches: [ main ]
+    types:
+      - completed
 jobs:
   publish:
     runs-on: ubuntu-latest
