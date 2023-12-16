@@ -33,5 +33,7 @@ jobs:
       - run: cargo test
       - run: cargo install cargo-bump
       - run: cargo bump -g ${{ inputs.tag-increment }}
+      - run: git add Cargo.lock
+      - run: git commit -m "CI runner - update Cargo.lock"
       - run: git push && git push --tags
       - run: cargo publish --token ${{ secrets.CARGO_TOKEN }}
