@@ -46,9 +46,11 @@ impl Dns {
         let path = format!("{}/{}/dns_records/import", PATH, id.replace('\"', ""));
 
         // let file_contents = fs::read_to_string(file).unwrap();
-        let mut body = RequestBody::default();
-        body.file = Option::from(file);
-        body.proxied = Option::from(proxy.to_string());
+        let body = RequestBody {
+            file: Option::from(file),
+            proxied: Option::from(proxy.to_string()),
+            ..Default::default()
+        };
         let response = CloudflareClient {
             endpoint: ENDPOINT.to_string(),
         }

@@ -84,4 +84,4 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: clippy
-      - run: cargo clippy --all-features --all-targets
+      - run: cargo clippy -- W clippy::pedantic

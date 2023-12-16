@@ -27,8 +27,10 @@ impl Zone {
     }
 
     pub(crate) fn create(name: String) {
-        let mut body = RequestBody::default();
-        body.name = Option::from(name);
+        let body = RequestBody {
+            name: Option::from(name),
+            ..Default::default()
+        };
         let response = CloudflareClient {
             endpoint: ENDPOINT.to_string(),
         }
