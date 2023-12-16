@@ -24,7 +24,7 @@ jobs:
       # repo write permission for pushing tags
       contents: write
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt,clippy
