@@ -1,7 +1,7 @@
 # ☁️🚀 cliflare 🚀☁️
 ![build](https://github.com/davepmiller/cliflare/actions/workflows/ci.yml/badge.svg?branch=main)
 ![publish](https://github.com/davepmiller/cliflare/actions/workflows/publish.yml/badge.svg?branch=main)
-[![Coverage Status](https://coveralls.io/repos/github/davepmiller/cliflare/badge.svg?branch=main)](https://coveralls.io/github/davepmiller/cliflare?branch=main)
+[![Coverage Status](https://coveralls.io/repos/github/davepmiller/cliflare/badge.svg)](https://coveralls.io/github/davepmiller/cliflare)
 ![crates.io](https://img.shields.io/crates/v/cliflare.svg)
 ![downloads](https://img.shields.io/crates/d/cliflare)
 [![license](https://img.shields.io/badge/license-MIT-green.svg)](https://opensource.org/licenses/MIT)
