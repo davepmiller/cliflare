@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.3.3 - 2023-12-16
+
+- [Added] markdown linting to ci
+- [Changed] publish action depends on ci - reduce redundancy
+- [Fixed] lints in *.md files
+- [Changed] clippy ci to use `clippy::pedantic`
+- [Fixed] pedantic lints
+
 ## v0.3.2 - 2023-12-15
 
 - [Added] `zone delete --name <DOMAIN>`
