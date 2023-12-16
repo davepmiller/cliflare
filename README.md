@@ -27,7 +27,7 @@
   echo CLOUDFLARE_TOKEN=abcd1234**API_TOKEN**4321dcba >> ~/.zshrc
   echo CLOUDFLARE_ACCOUNT_ID=abcd1234**ACCOUNT_ID**4321dcba >> ~/.zshrc
   ```
-#### Execute:
+#### Examples:
 * [Token Verify 📝](https://developers.cloudflare.com/api/operations/user-api-tokens-verify-token)
     ```bash
     cliflare token verify
@@ -39,9 +39,13 @@
     # print only zone "name" field -- i.e. domains
     cliflare zone list --domains
     ```
-* [Create Zone 📝](https://developers.cloudflare.com/api/operations/zones-post)
+* [Create a Zone 📝](https://developers.cloudflare.com/api/operations/zones-post)
   ```bash
   cliflare zone create newzone.com
+  ```
+* [Delete a Zone 📝](https://developers.cloudflare.com/api/operations/zones-0-delete)
+  ```bash
+  cliflare zone delete newzone.com
   ```
 * [List DNS Records For A Zone 📝](https://developers.cloudflare.com/api/operations/dns-records-for-a-zone-list-dns-records)
   ```bash
@@ -57,15 +61,28 @@
   cliflare dns export --zone_name <DOMAIN>
   cliflare dns export -n <DOMAIN>
   ```
+* [Import DNS Records For A Zone 📝](https://developers.cloudflare.com/api/operations/dns-records-for-a-zone-import-dns-records)
+  ```bash
+  cliflare dns import --file <PATH> --zone_id <ZONE_ID>
+  cliflare dns import -f <PATH> -i <ZONE_ID>
+  cliflare dns import -file <PATH> --zone_name <DOMAIN>
+  cliflare dns import -f <PATH> -n <DOMAIN>
+  ```
 
 #### Coming Soon:
-* [Zone Details](https://developers.cloudflare.com/api/operations/zones-0-get)
 * [Create DNS Record For A Zone](https://developers.cloudflare.com/api/operations/dns-records-for-a-zone-create-dns-record)
 * Parameterize [Pagination Options](https://developers.cloudflare.com/fundamentals/api/how-to/make-api-calls/#pagination)
 
 #### Coming Soonish:
-* Homebrew setup
 * Create WAF rules
 * Create redirect rules
 * Create some other rules
 * Add parameters to `zone create` for customization
+* Homebrew setup
+
+### Feature Requests?
+Awesome!
+
+Fill out [this form](https://docs.google.com/forms/d/e/1FAIpQLSfDBhmvtRn1C3Vzi_nplHV9QyBVbPUfdqhziUj_sWYyi-XIFw/viewform?usp=sf_link) and I'll get back to you.
+
+
