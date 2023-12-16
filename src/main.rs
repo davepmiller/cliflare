@@ -11,31 +11,34 @@ mod response;
 mod token;
 mod zone;
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() {
     let args = Cli::parse();
     match args.command {
         Commands::Token(token) => match token.command {
             TokenCommands::Verify => Token::verify(),
         },
         Commands::Zone(zone) => match zone.command.unwrap() {
-            ZoneCommands::List(args) => match args.domains {
-                true => Zone::list_domains(),
-                false => Zone::list(),
-            },
+            ZoneCommands::List(args) => {
+                if args.domains {
+                    Zone::list_domains();
+                } else {
+                    Zone::list();
+                }
+            }
             ZoneCommands::Create { domain } => Zone::create(domain),
             ZoneCommands::Delete { zone_id, zone_name } => {
                 let id = Dns::get_id(zone_name, zone_id);
-                Zone::delete(id);
+                Zone::delete(id.as_str());
             }
         },
         Commands::Dns(dns) => match dns.command {
             DnsCommands::List { zone_name, zone_id } => {
                 let id = Dns::get_id(zone_name, zone_id);
-                Dns::list(id)
+                Dns::list(id.as_str());
             }
             DnsCommands::Export { zone_name, zone_id } => {
                 let id = Dns::get_id(zone_name, zone_id);
-                Dns::export(id);
+                Dns::export(id.as_str());
             }
             DnsCommands::Import {
                 zone_name,
@@ -44,10 +47,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 proxy,
             } => {
                 let id = Dns::get_id(zone_name, zone_id);
-                Dns::import(id, file, proxy);
+                Dns::import(id.as_str(), file, proxy);
             }
         },
     }
-
-    Ok(())
 }

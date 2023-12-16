@@ -10,6 +10,6 @@ impl Token {
             endpoint: ENDPOINT.to_string(),
         }
         .get(PATH);
-        println!("{:?}", response);
+        println!("{response:?}");
     }
 }

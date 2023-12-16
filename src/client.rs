@@ -33,9 +33,10 @@ impl CloudflareClient {
             .headers(headers)
             .send()
             .unwrap();
-        match path.contains("export") {
-            true => parse_text(response),
-            false => parse_response(response),
+        if path.contains("export") {
+            parse_text(response)
+        } else {
+            parse_response(response)
         }
     }
 
@@ -69,7 +70,7 @@ impl CloudflareClient {
         parse_response(response)
     }
 
-    pub(crate) fn delete(&self, path: String) -> Response {
+    pub(crate) fn delete(&self, path: &str) -> Response {
         let headers = build_headers();
         let client = reqwest::blocking::Client::new();
         let response = client
@@ -89,8 +90,8 @@ fn parse_text(response: reqwest::blocking::Response) -> Response {
         errors: vec![],
         messages: vec![],
         text: Some(response.text().unwrap_or_else(|e| {
-            println!("{:?}", e);
-            "".to_string()
+            println!("{e:?}");
+            String::new()
         })),
     }
 }
@@ -98,7 +99,7 @@ fn parse_text(response: reqwest::blocking::Response) -> Response {
 fn build_headers() -> HeaderMap {
     let mut headers = HeaderMap::new();
     let cloudflare_token = get_env("CLOUDFLARE_TOKEN");
-    let auth = format!("Bearer {}", cloudflare_token);
+    let auth = format!("Bearer {cloudflare_token}");
     headers.insert(
         AUTHORIZATION,
         HeaderValue::from_bytes(auth.as_bytes()).unwrap(),
@@ -108,22 +109,19 @@ fn build_headers() -> HeaderMap {
 }
 
 fn get_env(key: &str) -> String {
-    match env::var(key) {
-        Ok(t) => t,
-        Err(_) => panic!("{} is not set", key),
-    }
+    env::var(key).unwrap_or_else(|_| panic!("{key} should be set"))
 }
 
 fn parse_response(response: reqwest::blocking::Response) -> Response {
     response.json::<Response>().unwrap_or_else(|e| {
-        println!("{:?}", e);
+        println!("{e:?}");
         Response {
             result: Value::String("{}".to_string()),
             result_info: None,
             success: false,
             errors: vec![],
             messages: vec![],
-            text: Some("".to_string()),
+            text: Some(String::new()),
         }
     })
 }
