@@ -1,4 +1,4 @@
-![cliffy](assets/cliffy.jpeg)
+# ![cliffy](assets/cliffy.jpeg)
 
 ![build](https://github.com/davepmiller/cliflare/actions/workflows/ci.yml/badge.svg?branch=main)
 ![publish](https://github.com/davepmiller/cliflare/actions/workflows/publish.yml/badge.svg?branch=main)
