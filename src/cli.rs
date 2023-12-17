@@ -1,9 +1,11 @@
 use clap::{Args, Parser, Subcommand};
 
 #[derive(Debug, Parser)]
-#[command(name = "cliflare", author = "@davepmiller")]
-#[command(version = "1.0")]
-#[command(about = "Use Cloudflare API from the command line", long_about = None)]
+#[command(
+    about = "Use Cloudflare API from the command line",
+    author = "Dave Miller - https://github.com/davepmiller",
+    long_about = None
+)]
 pub(crate) struct Cli {
     #[command(subcommand)]
     pub(crate) command: Commands,
