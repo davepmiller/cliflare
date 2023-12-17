@@ -35,6 +35,7 @@ jobs:
       - run: cargo bump -g ${{ inputs.tag-increment }}
       - uses: EndBug/add-and-commit@v9
         with:
-          add: Cargo.lock
+          add: 'Cargo.lock'
           push: true
+      - run: git diff
       - run: cargo publish --token ${{ secrets.CARGO_TOKEN }}
