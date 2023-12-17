@@ -2,7 +2,7 @@
 [package]
 name = "cliflare"
 description = "A command line tool used to interact with Cloudflare APIs"
-version = "0.3.3"
+version = "0.3.4"
 edition = "2021"
 authors = ["@davepmiller"]
 readme = "README.md"
