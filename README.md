@@ -104,9 +104,9 @@ cliflare dns import -f <PATH> -n <DOMAIN>
 * Add parameters to `zone create` for customization
 * Homebrew setup
 
-### Feature Requests?
+## Feature Requests
 
 Awesome!
 
-Fill out [this form](https://docs.google.com/forms/d/e/1FAIpQLSfDBhmvtRn1C3Vzi_nplHV9QyBVbPUfdqhziUj_sWYyi-XIFw/viewform?usp=sf_link) 
+Fill out [this form](https://docs.google.com/forms/d/e/1FAIpQLSfDBhmvtRn1C3Vzi_nplHV9QyBVbPUfdqhziUj_sWYyi-XIFw/viewform?usp=sf_link)
 and I'll get back to you.
