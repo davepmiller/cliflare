@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.3.5 - 2023-12-18
+## v0.4.0 - 2023-12-18
 
 - [Fixed] badge links in README
 - [Added] `dns clear --name <DOMAIN>`
