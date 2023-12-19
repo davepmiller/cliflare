@@ -112,4 +112,14 @@ pub(crate) enum DnsCommands {
         #[arg(long, short)]
         proxy: bool,
     },
+    /// Import DNS records to a zone
+    #[command(arg_required_else_help = true)]
+    Clear {
+        /// zone name
+        #[arg(long, short = 'n', required_unless_present = "zone_id")]
+        zone_name: Option<String>,
+        /// zone ID
+        #[arg(long, short = 'i', required_unless_present = "zone_name")]
+        zone_id: Option<String>,
+    },
 }

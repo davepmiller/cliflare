@@ -1,10 +1,22 @@
 use crate::client::{CloudflareClient, RequestBody, ENDPOINT};
+use crate::response::Response;
 
 const PATH: &str = "zones";
 
 pub(crate) struct Dns;
 
 impl Dns {
+    pub(crate) fn clear(id: &str) {
+        let response = Dns::get_records(id);
+        if response.result.as_array().is_none() {
+            println!("result array is empty, make sure that DNS records exist for {id}");
+            return;
+        }
+        response.result.as_array().unwrap().iter().for_each(|r| {
+            Dns::delete_record(id, r["id"].as_str().unwrap());
+        });
+    }
+
     pub(crate) fn export(id: &str) {
         let path = format!(
             "{}/{}/dns_records/export?per_page=100",
@@ -59,11 +71,44 @@ impl Dns {
     }
 
     pub(crate) fn list(id: &str) {
+        let response = Dns::get_records(id);
+        if response.result.as_array().is_none() {
+            println!("result array is empty, make sure that DNS records exist for {id}");
+            return;
+        }
+        println!("{response:?}");
+    }
+
+    fn get_records(id: &str) -> Response {
         let path = format!("{}/{}/dns_records?per_page=100", PATH, id.replace('\"', ""));
-        let response = CloudflareClient {
+        CloudflareClient {
             endpoint: ENDPOINT.to_string(),
         }
-        .get(path.as_str());
-        println!("{response:?}");
+        .get(path.as_str())
+    }
+
+    fn delete_record(zone_id: &str, record_id: &str) -> Response {
+        println!("deleting record: {record_id} for zone: {zone_id}");
+        let path = format!(
+            "{}/{}/dns_records/{}",
+            PATH,
+            zone_id.replace('\"', ""),
+            record_id.replace('\"', "")
+        );
+        CloudflareClient {
+            endpoint: ENDPOINT.to_string(),
+        }
+        .delete(path.as_str())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::dns::Dns;
+
+    #[test]
+    fn delete_record() {
+        let res = Dns::delete_record("", "");
+        assert_eq!(res.success, false);
     }
 }

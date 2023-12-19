@@ -33,7 +33,7 @@ impl CloudflareClient {
             .headers(headers)
             .send()
             .unwrap();
-        if path.contains("export") {
+        if path.contains("/dns_records/export") {
             parse_text(response)
         } else {
             parse_response(response)
@@ -127,12 +127,12 @@ fn parse_response(response: reqwest::blocking::Response) -> Response {
 }
 
 #[cfg(test)]
-mod test {
+pub(crate) mod tests {
     use super::*;
     use serde_json::json;
     use std::env;
 
-    fn response_body() -> String {
+    pub(crate) fn response_body() -> String {
         json!({
         "success": true,
         "result": "",
@@ -143,7 +143,7 @@ mod test {
         .to_string()
     }
 
-    fn setup_env() {
+    pub(crate) fn setup_env() {
         env::set_var("CLOUDFLARE_TOKEN", "test1234");
         env::set_var("CLOUDFLARE_ACCOUNT_ID", "test1234");
     }

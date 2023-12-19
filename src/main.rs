@@ -49,6 +49,10 @@ fn main() {
                 let id = Dns::get_id(zone_name, zone_id);
                 Dns::import(id.as_str(), file, proxy);
             }
+            DnsCommands::Clear { zone_id, zone_name } => {
+                let id = Dns::get_id(zone_name, zone_id);
+                Dns::clear(id.as_str());
+            }
         },
     }
 }
