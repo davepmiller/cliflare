@@ -42,7 +42,11 @@ pub struct ZoneArgs {
 #[derive(Debug, Subcommand)]
 pub enum ZoneCommands {
     /// list zones
-    List(ZoneListArgs),
+    List {
+        /// List only domain names for each zone
+        #[arg(short, long)]
+        domains: bool,
+    },
 
     /// create a zone
     #[command(arg_required_else_help = true)]
@@ -61,13 +65,6 @@ pub enum ZoneCommands {
         #[arg(long, short = 'i', required_unless_present = "zone_name")]
         zone_id: Option<String>,
     },
-}
-
-#[derive(Debug, Args)]
-pub(crate) struct ZoneListArgs {
-    /// List only domain names for each zone
-    #[arg(short, long)]
-    pub(crate) domains: bool,
 }
 
 #[derive(Debug, Args)]

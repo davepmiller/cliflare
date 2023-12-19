@@ -18,8 +18,8 @@ fn main() {
             TokenCommands::Verify => Token::verify(),
         },
         Commands::Zone(zone) => match zone.command.unwrap() {
-            ZoneCommands::List(args) => {
-                if args.domains {
+            ZoneCommands::List { domains } => {
+                if domains {
                     Zone::list_domains();
                 } else {
                     Zone::list();
