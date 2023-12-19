@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.3.5 - 2023-12-18
+
+- [Fixed] badge links in README
+- [Added] `dns clear --name <DOMAIN>`
+- [Changed] moved environment variable management into tests, while testing
+- [Added] some cool spice to the README (cliffy.jpeg)
+
+## v0.3.4 - 2023-12-16
+
+- [Added] this version got lost due to CI updates
+
 ## v0.3.3 - 2023-12-16
 
 - [Added] markdown linting to ci
