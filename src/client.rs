@@ -143,8 +143,14 @@ mod test {
         .to_string()
     }
 
+    fn setup_env() {
+        env::set_var("CLOUDFLARE_TOKEN", "test1234");
+        env::set_var("CLOUDFLARE_ACCOUNT_ID", "test1234");
+    }
+
     #[test]
     fn test_get() {
+        setup_env();
         let mut mock_server = mockito::Server::new();
         let mock = mock_server
             .mock("GET", "/zones")
@@ -163,6 +169,7 @@ mod test {
 
     #[test]
     fn test_post() {
+        setup_env();
         let mut mock_server = mockito::Server::new();
         let mock = mock_server
             .mock("POST", "/zones")
@@ -193,6 +200,7 @@ mod test {
 
     #[test]
     fn test_delete() {
+        setup_env();
         let mut mock_server = mockito::Server::new();
         let mock = mock_server
             .mock("DELETE", "/zones/1234")
@@ -213,10 +221,8 @@ mod test {
         let client = CloudflareClient {
             endpoint: mock_server.url(),
         };
-        let mut body = RequestBody::default();
-        body.name = Option::from("test.com".to_string());
-        let res = client.delete("zones/1234");
 
+        let res = client.delete("zones/1234");
         mock.assert();
         assert!(res.success);
     }
