@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.4.1 - 2024-01-07
+
+- [Changed] made cloudflare client endpoint an environment variable
+- [Added] `settings list --name <DOMAIN>`
+- [Changed] test setup for rest client mocks
+
 ## v0.4.0 - 2023-12-18
 
 - [Fixed] badge links in README
