@@ -1,5 +1,6 @@
-use crate::cli::{Cli, Commands, DnsCommands, TokenCommands, ZoneCommands};
+use crate::cli::{Cli, Commands, DnsCommands, SettingsCommands, TokenCommands, ZoneCommands};
 use crate::dns::Dns;
+use crate::settings::Settings;
 use crate::token::Token;
 use crate::zone::Zone;
 use clap::Parser;
@@ -8,6 +9,7 @@ mod cli;
 mod client;
 mod dns;
 mod response;
+mod settings;
 mod token;
 mod zone;
 
@@ -52,6 +54,12 @@ fn main() {
             DnsCommands::Clear { zone_id, zone_name } => {
                 let id = Dns::get_id(zone_name, zone_id);
                 Dns::clear(id.as_str());
+            }
+        },
+        Commands::Settings(settings) => match settings.command {
+            SettingsCommands::List { zone_name, zone_id } => {
+                let id = Dns::get_id(zone_name, zone_id);
+                Settings::list(id.as_str());
             }
         },
     }

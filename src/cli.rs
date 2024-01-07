@@ -13,12 +13,14 @@ pub(crate) struct Cli {
 
 #[derive(Debug, Subcommand)]
 pub(crate) enum Commands {
-    /// List, Create, Zones
+    /// List, Create, Delete Zones
     Zone(ZoneArgs),
     /// Verify your API Token
     Token(TokenArgs),
     /// Manage DNS records
     Dns(DnsArgs),
+    /// List settings
+    Settings(SettingsArgs),
 }
 
 #[derive(Debug, Args)]
@@ -119,6 +121,26 @@ pub(crate) enum DnsCommands {
         #[arg(long, short = 'n', required_unless_present = "zone_id")]
         zone_name: Option<String>,
         /// zone ID
+        #[arg(long, short = 'i', required_unless_present = "zone_name")]
+        zone_id: Option<String>,
+    },
+}
+
+#[derive(Debug, Args)]
+pub struct SettingsArgs {
+    #[command(subcommand)]
+    pub(crate) command: SettingsCommands,
+}
+
+#[derive(Debug, Subcommand)]
+#[command(flatten_help = true)]
+pub(crate) enum SettingsCommands {
+    /// List settings for a zone
+    List {
+        /// zone name
+        #[arg(long, short = 'n', required_unless_present = "zone_id")]
+        zone_name: Option<String>,
+        /// zone id
         #[arg(long, short = 'i', required_unless_present = "zone_name")]
         zone_id: Option<String>,
     },

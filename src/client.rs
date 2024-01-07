@@ -123,52 +123,47 @@ fn parse_response(response: reqwest::blocking::Response) -> Response {
 pub(crate) mod tests {
     use super::*;
     use crate::client;
-    use mockito::ServerGuard;
+    use mockito;
+    use mockito::Mock;
     use serde_json::json;
     use std::env;
 
     pub(crate) fn response_body() -> String {
         json!({
-        "success": true,
-        "result": "",
-        "errors": [],
-        "messages": [],
-        "result_info": ""
+            "success": true,
+            "result": "",
+            "errors": [],
+            "messages": [],
+            "result_info": ""
         })
         .to_string()
     }
 
-    pub(crate) fn setup_env(mock_server: &ServerGuard) {
-        env::set_var("CLOUDFLARE_ENDPOINT", mock_server.url());
+    pub(crate) fn build_server_mock(method: &str, path: &str) -> Mock {
+        let mut mock_server = mockito::Server::new();
+        env::set_var("CLOUDFLARE_ENDPOINT", mock_server.url().replace('\"', ""));
         env::set_var("CLOUDFLARE_TOKEN", "test1234");
         env::set_var("CLOUDFLARE_ACCOUNT_ID", "test1234");
+        mock_server
+            .mock(method, path)
+            .with_status(201)
+            .with_header("content-type", "application/json")
     }
 
     #[test]
-    fn test_get() {
-        let mut mock_server = mockito::Server::new();
-        setup_env(&mock_server);
-        let mock = mock_server
-            .mock("GET", "/zones")
-            .with_status(201)
-            .with_header("content-type", "application/json")
-            .with_body(response_body())
-            .create();
-        let client = CloudflareClient {};
-        let res = client.get("zones");
+    fn get() {
+        let server_mock = build_server_mock("GET", "/zones");
+        let mock = server_mock.with_body(response_body()).create();
+        let res = client::get("zones");
 
         mock.assert();
         assert!(res.success);
     }
 
     #[test]
-    fn test_post() {
-        let mut mock_server = mockito::Server::new();
-        setup_env(&mock_server);
-        let mock = mock_server
-            .mock("POST", "/zones")
-            .with_status(201)
-            .with_header("content-type", "application/json")
+    fn post_json() {
+        let server_mock = build_server_mock("POST", "/zones");
+        let mock = server_mock
             .with_body(
                 json!({
                     "success": true,
@@ -181,23 +176,18 @@ pub(crate) mod tests {
                 .to_string(),
             )
             .create();
-        let client = CloudflareClient {};
         let mut body = RequestBody::default();
         body.name = Option::from("test.com".to_string());
-        let res = client.post_json("zones", body);
+        let res = client::post_json("zones", body);
 
         mock.assert();
         assert!(res.success);
     }
 
     #[test]
-    fn test_delete() {
-        let mut mock_server = mockito::Server::new();
-        setup_env(&mock_server);
-        let mock = mock_server
-            .mock("DELETE", "/zones/1234")
-            .with_status(201)
-            .with_header("content-type", "application/json")
+    fn delete() {
+        let server_mock = build_server_mock("DELETE", "/zones/1234");
+        let mock = server_mock
             .with_body(
                 json!({
                     "success": true,
@@ -211,16 +201,23 @@ pub(crate) mod tests {
             )
             .create();
 
-        let res = delete("zones/1234");
+        let res = client::delete("zones/1234");
         mock.assert();
         assert!(res.success);
     }
 
     #[test]
-    fn test_get_env() {
+    fn get_env() {
         let key = "TEST_KEY";
         let value = "TEST_VALUE";
         env::set_var(key, value);
-        assert_eq!(get_env(key), value);
+        assert_eq!(client::get_env(key), value);
+        env::remove_var(key);
+    }
+
+    #[test]
+    #[should_panic]
+    fn get_env_not_set() {
+        client::get_env("TEST_KEY");
     }
 }

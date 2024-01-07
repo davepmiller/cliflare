@@ -94,7 +94,7 @@ mod tests {
 
     #[test]
     fn delete_record() {
-        let res = Dns::delete_record("", "");
+        let res = Dns::delete_record("1234", "");
         assert_eq!(res.success, false);
     }
 }
