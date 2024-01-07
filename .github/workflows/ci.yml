@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
-      - run: cargo test --all-features --test-threads=1
+      - run: cargo test --all-features -- --test-threads=1
 
   macos-latest-stable:
     needs: [format]
@@ -31,7 +31,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
-      - run: cargo test --all-features --test-threads=1
+      - run: cargo test --all-features -- --test-threads=1
 
   macos-latest-nightly:
     needs: [format]
@@ -39,7 +39,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
-      - run: cargo test --all-features --test-threads=1
+      - run: cargo test --all-features -- --test-threads=1
 
   windows-latest-stable:
     needs: [format]
@@ -47,7 +47,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
-      - run: cargo test --all-features --test-threads=1
+      - run: cargo test --all-features -- --test-threads=1
 
   windows-latest-nightly:
     needs: [format]
@@ -55,7 +55,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
-      - run: cargo test --all-features --test-threads=1
+      - run: cargo test --all-features -- --test-threads=1
 
   update-coverage:
     needs: [format]
