@@ -94,6 +94,13 @@ cliflare dns clear --zone_id <ZONE_ID>
 cliflare dns clear --zone_name <DOMAIN>
 ```
 
+### [List All Settings For A Zone 📝](https://developers.cloudflare.com/api/operations/zone-settings-get-all-zone-settings)
+
+```bash
+cliflare settings list --zone_id <ZONE_ID>
+cliflare settings list --zone_name <DOMAIN>
+```
+
 ## Coming Soon
 
 * [Create DNS Record For A Zone](https://developers.cloudflare.com/api/operations/dns-records-for-a-zone-create-dns-record)
