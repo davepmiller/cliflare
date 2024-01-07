@@ -1,4 +1,5 @@
-use crate::client::{CloudflareClient, RequestBody, ENDPOINT};
+use crate::client;
+use crate::client::RequestBody;
 use crate::response::Response;
 
 const PATH: &str = "zones";
@@ -23,10 +24,7 @@ impl Dns {
             PATH,
             id.replace('\"', "")
         );
-        let response = CloudflareClient {
-            endpoint: ENDPOINT.to_string(),
-        }
-        .get(path.as_str());
+        let response = client::get(path.as_str());
         println!("{}", response.text.unwrap().as_str());
     }
 
@@ -35,10 +33,7 @@ impl Dns {
             zone_id.unwrap()
         } else {
             let name_arg = zone_name.unwrap().clone();
-            let response = CloudflareClient {
-                endpoint: ENDPOINT.to_string(),
-            }
-            .get(format!("{PATH}/?per_page=100").as_str());
+            let response = client::get(format!("{PATH}/?per_page=100").as_str());
             match response
                 .result
                 .as_array()
@@ -63,10 +58,7 @@ impl Dns {
             proxied: Option::from(proxy.to_string()),
             ..Default::default()
         };
-        let response = CloudflareClient {
-            endpoint: ENDPOINT.to_string(),
-        }
-        .post_form(path.as_str(), body);
+        let response = client::post_form(path.as_str(), body);
         println!("{response:?}");
     }
 
@@ -81,10 +73,7 @@ impl Dns {
 
     fn get_records(id: &str) -> Response {
         let path = format!("{}/{}/dns_records?per_page=100", PATH, id.replace('\"', ""));
-        CloudflareClient {
-            endpoint: ENDPOINT.to_string(),
-        }
-        .get(path.as_str())
+        client::get(path.as_str())
     }
 
     fn delete_record(zone_id: &str, record_id: &str) -> Response {
@@ -95,10 +84,7 @@ impl Dns {
             zone_id.replace('\"', ""),
             record_id.replace('\"', "")
         );
-        CloudflareClient {
-            endpoint: ENDPOINT.to_string(),
-        }
-        .delete(path.as_str())
+        client::delete(path.as_str())
     }
 }
 

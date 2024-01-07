@@ -5,12 +5,6 @@ use serde::Serialize;
 use serde_json::Value;
 use std::env;
 
-pub const ENDPOINT: &str = "https://api.cloudflare.com/client/v4";
-
-pub(crate) struct CloudflareClient {
-    pub(crate) endpoint: String,
-}
-
 #[derive(Serialize, Default, Debug)]
 pub(crate) struct Account {
     id: String,
@@ -24,62 +18,61 @@ pub(crate) struct RequestBody {
     pub(crate) proxied: Option<String>,
 }
 
-impl CloudflareClient {
-    pub(crate) fn get(&self, path: &str) -> Response {
-        let headers = build_headers();
-        let client = reqwest::blocking::Client::new();
-        let response = client
-            .get(format!("{}/{}", self.endpoint, path))
-            .headers(headers)
-            .send()
-            .unwrap();
-        if path.contains("/dns_records/export") {
-            parse_text(response)
-        } else {
-            parse_response(response)
-        }
-    }
-
-    pub(crate) fn post_json(&self, path: &str, mut body: RequestBody) -> Response {
-        let headers = build_headers();
-        body.account = Option::from(Account {
-            id: get_env("CLOUDFLARE_ACCOUNT_ID"),
-        });
-        let client = reqwest::blocking::Client::new();
-        let response = client
-            .post(format!("{}/{}", self.endpoint, path))
-            .headers(headers)
-            .json(&body)
-            .send()
-            .unwrap();
+// impl CloudflareClient {
+pub(crate) fn get(path: &str) -> Response {
+    let headers = build_headers();
+    let client = reqwest::blocking::Client::new();
+    let response = client
+        .get(format!("{}/{}", get_env("CLOUDFLARE_ENDPOINT"), path))
+        .headers(headers)
+        .send()
+        .unwrap();
+    if path.contains("/dns_records/export") {
+        parse_text(response)
+    } else {
         parse_response(response)
     }
+}
 
-    pub(crate) fn post_form(&self, path: &str, body: RequestBody) -> Response {
-        let mut headers = build_headers();
-        headers.remove(CONTENT_TYPE);
-        let form = reqwest::blocking::multipart::Form::new().file("file", body.file.unwrap());
+pub(crate) fn post_json(path: &str, mut body: RequestBody) -> Response {
+    let headers = build_headers();
+    body.account = Option::from(Account {
+        id: get_env("CLOUDFLARE_ACCOUNT_ID"),
+    });
+    let client = reqwest::blocking::Client::new();
+    let response = client
+        .post(format!("{}/{}", get_env("CLOUDFLARE_ENDPOINT"), path))
+        .headers(headers)
+        .json(&body)
+        .send()
+        .unwrap();
+    parse_response(response)
+}
 
-        let client = reqwest::blocking::Client::new();
-        let response = client
-            .post(format!("{}/{}", self.endpoint, path))
-            .headers(headers)
-            .multipart(form.unwrap())
-            .send()
-            .unwrap();
-        parse_response(response)
-    }
+pub(crate) fn post_form(path: &str, body: RequestBody) -> Response {
+    let mut headers = build_headers();
+    headers.remove(CONTENT_TYPE);
+    let form = reqwest::blocking::multipart::Form::new().file("file", body.file.unwrap());
 
-    pub(crate) fn delete(&self, path: &str) -> Response {
-        let headers = build_headers();
-        let client = reqwest::blocking::Client::new();
-        let response = client
-            .delete(format!("{}/{}", self.endpoint, path))
-            .headers(headers)
-            .send()
-            .unwrap();
-        parse_response(response)
-    }
+    let client = reqwest::blocking::Client::new();
+    let response = client
+        .post(format!("{}/{}", get_env("CLOUDFLARE_ENDPOINT"), path))
+        .headers(headers)
+        .multipart(form.unwrap())
+        .send()
+        .unwrap();
+    parse_response(response)
+}
+
+pub(crate) fn delete(path: &str) -> Response {
+    let headers = build_headers();
+    let client = reqwest::blocking::Client::new();
+    let response = client
+        .delete(format!("{}/{}", get_env("CLOUDFLARE_ENDPOINT"), path))
+        .headers(headers)
+        .send()
+        .unwrap();
+    parse_response(response)
 }
 
 fn parse_text(response: reqwest::blocking::Response) -> Response {
@@ -108,7 +101,7 @@ fn build_headers() -> HeaderMap {
     headers
 }
 
-fn get_env(key: &str) -> String {
+pub(crate) fn get_env(key: &str) -> String {
     env::var(key).unwrap_or_else(|_| panic!("{key} should be set"))
 }
 
@@ -129,6 +122,8 @@ fn parse_response(response: reqwest::blocking::Response) -> Response {
 #[cfg(test)]
 pub(crate) mod tests {
     use super::*;
+    use crate::client;
+    use mockito::ServerGuard;
     use serde_json::json;
     use std::env;
 
@@ -143,24 +138,23 @@ pub(crate) mod tests {
         .to_string()
     }
 
-    pub(crate) fn setup_env() {
+    pub(crate) fn setup_env(mock_server: &ServerGuard) {
+        env::set_var("CLOUDFLARE_ENDPOINT", mock_server.url());
         env::set_var("CLOUDFLARE_TOKEN", "test1234");
         env::set_var("CLOUDFLARE_ACCOUNT_ID", "test1234");
     }
 
     #[test]
     fn test_get() {
-        setup_env();
         let mut mock_server = mockito::Server::new();
+        setup_env(&mock_server);
         let mock = mock_server
             .mock("GET", "/zones")
             .with_status(201)
             .with_header("content-type", "application/json")
             .with_body(response_body())
             .create();
-        let client = CloudflareClient {
-            endpoint: mock_server.url(),
-        };
+        let client = CloudflareClient {};
         let res = client.get("zones");
 
         mock.assert();
@@ -169,8 +163,8 @@ pub(crate) mod tests {
 
     #[test]
     fn test_post() {
-        setup_env();
         let mut mock_server = mockito::Server::new();
+        setup_env(&mock_server);
         let mock = mock_server
             .mock("POST", "/zones")
             .with_status(201)
@@ -187,9 +181,7 @@ pub(crate) mod tests {
                 .to_string(),
             )
             .create();
-        let client = CloudflareClient {
-            endpoint: mock_server.url(),
-        };
+        let client = CloudflareClient {};
         let mut body = RequestBody::default();
         body.name = Option::from("test.com".to_string());
         let res = client.post_json("zones", body);
@@ -200,8 +192,8 @@ pub(crate) mod tests {
 
     #[test]
     fn test_delete() {
-        setup_env();
         let mut mock_server = mockito::Server::new();
+        setup_env(&mock_server);
         let mock = mock_server
             .mock("DELETE", "/zones/1234")
             .with_status(201)
@@ -218,11 +210,8 @@ pub(crate) mod tests {
                 .to_string(),
             )
             .create();
-        let client = CloudflareClient {
-            endpoint: mock_server.url(),
-        };
 
-        let res = client.delete("zones/1234");
+        let res = delete("zones/1234");
         mock.assert();
         assert!(res.success);
     }
