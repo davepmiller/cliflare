@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.4.3 - 2024-01-07
+
+- [Added] `sanity check coverage, happy path unit tests with API mocks`
+
+## v0.4.2 - 2024-01-07
+
+- [Added] `nothing really`
+
 ## v0.4.1 - 2024-01-07
 
 - [Changed] made cloudflare client endpoint an environment variable
