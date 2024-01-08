@@ -103,9 +103,11 @@ cliflare settings list --zone_name <DOMAIN>
 ```
 
 ## License
-Cliflare is free software. This project is available under the terms of either the Apache 2.0 license or the MIT license.
+
+Cliflare is free software.
+This project is available under the terms of
+either the Apache 2.0 license or the MIT license.
 Cliflare is provided on an "AS IS" basis and there is NO WARRANTY attached to it.
-Upstream source code is used under the terms of the Apache 2.0 license and the MIT license.
 
 ## Feature Requests
 
