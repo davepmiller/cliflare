@@ -33,6 +33,7 @@ cargo install cliflare
 
 ```bash
 # add your token value to a startup script
+echo CLOUDFLARE_ENDPOINT=https://api.cloudflare.com/client/v4 >> ~/.zshrc
 echo CLOUDFLARE_TOKEN=abcd1234**API_TOKEN**4321dcba >> ~/.zshrc
 echo CLOUDFLARE_ACCOUNT_ID=abcd1234**ACCOUNT_ID**4321dcba >> ~/.zshrc
 ```
