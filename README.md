@@ -102,10 +102,10 @@ cliflare settings list --zone_id <ZONE_ID>
 cliflare settings list --zone_name <DOMAIN>
 ```
 
-## Coming Soon
-
-* [Create DNS Record For A Zone](https://developers.cloudflare.com/api/operations/dns-records-for-a-zone-create-dns-record)
-* Parameterize [Pagination Options](https://developers.cloudflare.com/fundamentals/api/how-to/make-api-calls/#pagination)
+## License
+Cliflare is free software. This project is available under the terms of either the Apache 2.0 license or the MIT license.
+Cliflare is provided on an "AS IS" basis and there is NO WARRANTY attached to it.
+Upstream source code is used under the terms of the Apache 2.0 license and the MIT license.
 
 ## Feature Requests
 
