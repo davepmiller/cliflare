@@ -6,6 +6,7 @@
 [![crates.io](https://img.shields.io/crates/v/cliflare.svg)](<https://crates.io/crates/cliflare>)
 [![downloads](https://img.shields.io/crates/d/cliflare)](<https://crates.io/crates/cliflare>)
 [![license](https://img.shields.io/badge/license-MIT-green.svg)](<https://opensource.org/licenses/MIT>)
+[![license](https://img.shields.io/badge/license-APACHE-blue.svg)](<https://opensource.org/licenses/APACHE>)
 
 * 🛠 CLI️ to interact with Cloudflare APIs
 * 🥳 An excuse to write some Rust
@@ -19,7 +20,7 @@
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
-### Install
+### Install Cliflare
 
 ```bash
 cargo install cliflare
@@ -38,69 +39,14 @@ echo CLOUDFLARE_TOKEN=abcd1234**API_TOKEN**4321dcba >> ~/.zshrc
 echo CLOUDFLARE_ACCOUNT_ID=abcd1234**ACCOUNT_ID**4321dcba >> ~/.zshrc
 ```
 
-## Examples
+## Functionality
 
-### [Token Verify 📝](https://developers.cloudflare.com/api/operations/user-api-tokens-verify-token)
+See examples in [usage.md](docs/usage.md)
 
-```bash
-cliflare token verify
-```
-
-### [Zone List 📝](https://developers.cloudflare.com/api/operations/zones-get)
-
-```bash
-# print out all zone info
-cliflare zone list
-# print only zone "name" field -- i.e. domains
-cliflare zone list --domains
-```
-
-### [Create a Zone 📝](https://developers.cloudflare.com/api/operations/zones-post)
-
-```bash
-cliflare zone create newzone.com
-```
-
-### [Delete a Zone 📝](https://developers.cloudflare.com/api/operations/zones-0-delete)
-
-```bash
-cliflare zone delete newzone.com
-```
-
-### [List DNS Records For A Zone 📝](https://developers.cloudflare.com/api/operations/dns-records-for-a-zone-list-dns-records)
-
-```bash
-cliflare dns list --zone_id <ZONE_ID>
-cliflare dns list --zone_name <DOMAIN>
-```
-
-### [Export DNS Records For A Zone 📝](https://developers.cloudflare.com/api/operations/dns-records-for-a-zone-export-dns-records)
-
-```bash
-cliflare dns export --zone_id <ZONE_ID>
-cliflare dns export --zone_name <DOMAIN>
-```
-
-### [Import DNS Records For A Zone 📝](https://developers.cloudflare.com/api/operations/dns-records-for-a-zone-import-dns-records)
-
-```bash
-cliflare dns import --file <PATH> --zone_id <ZONE_ID>
-cliflare dns import -file <PATH> --zone_name <DOMAIN>
-```
-
-### [Delete All DNS Records For A Zone 📝](https://developers.cloudflare.com/api/operations/dns-records-for-a-zone-delete-dns-record)
-
-```bash
-cliflare dns clear --zone_id <ZONE_ID>
-cliflare dns clear --zone_name <DOMAIN>
-```
-
-### [List All Settings For A Zone 📝](https://developers.cloudflare.com/api/operations/zone-settings-get-all-zone-settings)
-
-```bash
-cliflare settings list --zone_id <ZONE_ID>
-cliflare settings list --zone_name <DOMAIN>
-```
+* token verify
+* zone [ list | create | delete ]
+* dns [ list | import | export | delete all ]
+* settings list
 
 ## License
 
